@@ -79,28 +79,27 @@ void task_trajectory_generator_proc(void *arg)
 		  double acc = new_cmd.Acceleration;
 		  double dec = new_cmd.Deceleration;
 
-		  if (axis1_setpoint.Position < (v*v / (2 * acc)))
-				  {
-					  axis1_setpoint.Velocity += acc*T;
-					  axis1_setpoint.Position += axis1_setpoint.Velocity*T;
-					  printf("Status:Acceleration\nPosition:%f\n", axis1_setpoint.Position);
-				  }
+		  if (axis1_setpoint.Position < (v * v / (2 * acc)))
+            	  {
+		    axis1_setpoint.Velocity += acc * T;
+		    axis1_setpoint.Position += axis1_setpoint.Velocity * T;
+		    printf("Status:Acceleration\nPosition:%f\n", axis1_setpoint.Position);
+            	   }
 				  
-				  else if (axis1_setpoint.Position < (p - v*v / (2*d)))
-				  {
-					  axis1_setpoint.Velocity = v;
-					  axis1_setpoint.Position += v*T;
-					  printf("Status:Constant Motion\nPosition:%f\n", axis1_setpoint.Position);
-				  }
-				  else if (axis1_setpoint.Position < p)
-				  {
-					  axis1_setpoint.Position += axis1_setpoint.Velocity*T;
-					  axis1_setpoint.Velocity -= d*T;
-					  printf("Status:Deceleration\nPosition:%f\n", axis1_setpoint.Position);
-
-				  }
-				  else
-                  new_cmd.Done = true;
+            	   else if (axis1_setpoint.Position < (pos - v * v / (2 * dec)))
+            	  {
+		    axis1_setpoint.Velocity = v;
+		    axis1_setpoint.Position += v * T;
+		    printf("Status:Constant Motion\nPosition:%f\n", axis1_setpoint.Position);
+            	   }
+            	   else if (axis1_setpoint.Position < pos)
+            	  {
+		    axis1_setpoint.Position += axis1_setpoint.Velocity * T;
+		    axis1_setpoint.Velocity -= dec * T;
+		    printf("Status:Deceleration\nPosition:%f\n", axis1_setpoint.Position);
+            	   }
+            	   else
+                    new_cmd.Done = true;
                }
 	}
 }
